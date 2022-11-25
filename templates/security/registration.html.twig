@@ -1,0 +1,22 @@
+
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+<body backgroud='https://lh3.googleusercontent.com/proxy/8GqA85uqT1cY4OTkmap6xLxfrEogt9RezeVxEFjdkc8voFwHB-4BA81T-mwvI7llb4MEF-jcIwP0ghfXSAJbzCEp5DOKTVj0nByezS_BubaxAlvxq1KVH2XILvLPFc69IzkPumImc2BObPCYVtmUvFv18_do5wORSeuEhrGKa7lRkzdA71N0LdjuEHyX8TmvkrNZG0IoUa6FRd6mJGceRNFC89nm-2acValifA3E22rmH_ttJEJvCQg-jyzQ2sV5aaXjLDhu2sQc7gd74xfXP_Gy04XABcQ'>
+	<div class="col-lg-8 offset-lg-1 col-md-12">
+		<div class="card  mt-5">
+		<div class="card-header">
+			<h3>Inscrivez vous</h3>
+		</div>
+		<div class="card-content mb-5">
+			{{ form_start(form) }}
+			{{ form_row(form.email ,{'attr':{'placeholder':"Un email sera envoyé à cette adresse"}}) }}
+			{{ form_row(form.password ,{'attr':{'placeholder':"Ecrire votre mot de passe"}}) }}
+			<button type="submit" class="btn btn-success">S'inscrire</button>
+			{{ form_end(form) }}
+		</div>
+		
+		
+	</div>
+</div></body>{% endblock %}
