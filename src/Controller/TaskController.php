@@ -33,8 +33,10 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user =  $this->getUser();
             $task->setCreatedAt(new \DateTimeImmutable)
-                ->setIsDone(false);
+                ->setIsDone(false)
+                ->setUser($user);
             $em->persist($task);
             $em->flush();
             return $this->redirectToRoute('app_home');
@@ -49,10 +51,11 @@ class TaskController extends AbstractController
     {
         $form = $this->createForm(TaskType::class, $task);
 
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            
+            $task->setUser($this->getUser());
             $em->persist($task);
             $em->flush();
 
