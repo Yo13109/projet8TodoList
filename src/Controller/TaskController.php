@@ -39,6 +39,7 @@ class TaskController extends AbstractController
                 ->setUser($user);
             $em->persist($task);
             $em->flush();
+            $this->addFlash('success', 'Votre nouvelle tache a bien été crée');
             return $this->redirectToRoute('app_home');
         }
         return $this->render('task/createtask.html.twig', [
@@ -91,5 +92,15 @@ class TaskController extends AbstractController
 
         return $this->redirectToRoute('task_list');
     }
+    #[Route('/tasklistdone', name: 'task_listdone')]
+    public function listTaskdone(TaskRepository $taskRepository): Response
+    {
+
+        $tasks = $taskRepository->findBy([], ['createdAt' => 'asc'], );
+        return $this->render('task/taskListdone.html.twig', [
+            'controller_name' => 'TaskController',
+            'tasks' => $tasks,
+        ]);
+}
 }
 

@@ -58,12 +58,13 @@ class SecurityController extends AbstractController
         $user->setPassword(($this->passwordHasher->hashPassword(
                 $user,
                 $password
-            )));
+        )));
 
 
 
         $em->persist($user);
         $em->flush();
+        $this->addFlash('success', 'Votre inscription a bien été prise en compte');
         return $this->redirectToRoute('app_home');
     }
 
