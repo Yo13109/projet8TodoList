@@ -21,10 +21,17 @@ class UserFixtures extends Fixture
             1 => [
                 'email' => 'yoann.corsi@gmail.com',
                 'password' => 'Yoann13109',
+                'roles'=> ['ROLE_ADMIN']
             ],
             2 => [
                 'email' => 'laura.corsi@gmail.com',
                 'password' => 'Laura13109',
+                'roles'=> []
+            ],
+            3 => [
+                'email' => 'elodie.corsi@gmail.com',
+                'password' => 'Elodie13109',
+                'roles'=> []
             ],
            
                 
@@ -36,8 +43,9 @@ class UserFixtures extends Fixture
             $user = new User();
             $user
                 ->setEmail($userdatas['email'])
-                ->setPassword($this->passwordHasher->hashPassword($user,$userdatas['password']));
-               
+                ->setPassword($this->passwordHasher->hashPassword($user,$userdatas['password']))
+                ->setRoles($userdatas['roles']);
+                $this->addReference('user' . $key, $user);              
                     $manager->persist($user);
                 }
         $manager->flush();

@@ -7,14 +7,22 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class TaskType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title')
-            ->add('content', TextareaType::class)
+            ->add('title', TextType::class,[
+            'attr' => [
+                'class' => 'form-control',
+                'placeholder'=>"le titre"
+            ]])
+            ->add('content', TextareaType::class,
+            ['attr' => [
+            'class' => 'form-control',
+                    'placeholder'=>"Le contenu"]])
         ;
     }
 

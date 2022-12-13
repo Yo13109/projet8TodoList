@@ -42,6 +42,29 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+    #[Route('/user/edit', name: 'user_edit')]
+    public function editUser(User $user, Request $request,EntityManagerInterface $em)
+    {
+        $form = $this->createForm(UserType::class, $user);
+
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('success', 'La tâche a bien été modifiée.');
+
+            return $this->redirectToRoute('task_list');
+        }
+
+        return $this->render('security/edituser.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user,
+        ]);
+    }
     #[Route(path: '/inscription', name: 'app_registration')]
     public function registration(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher)
     {
@@ -54,11 +77,18 @@ class SecurityController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
+        
+        //if ($user->getRoles() == null)  {
+            $user->setRoles([$form->get('roles')->getData()]);
+       // }
         $password = $form->get('password')->getData();
         $user->setPassword(($this->passwordHasher->hashPassword(
                 $user,
                 $password
-        )));
+        )))
+             ;
+             
+
 
 
 
@@ -72,4 +102,5 @@ class SecurityController extends AbstractController
     return $this->render('security/registration.html.twig', [
         'form' => $form->createView()
     ]);
+    
 }}
