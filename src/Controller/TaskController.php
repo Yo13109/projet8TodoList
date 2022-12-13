@@ -13,19 +13,19 @@ use Symfony\Component\HttpFoundation\Request;
 
 class TaskController extends AbstractController
 {
-   
+
     #[Route('/tasklist', name: 'task_list')]
     public function listTask(TaskRepository $taskRepository): Response
     {
 
-        $tasks = $taskRepository->findBy([], ['createdAt' => 'asc'], );
+        $tasks = $taskRepository->findBy([], ['createdAt' => 'asc'],);
         return $this->render('task/taskList.html.twig', [
             'controller_name' => 'TaskController',
             'tasks' => $tasks,
         ]);
     }
     #[Route('/createtask', name: 'task_create')]
-    public function createAction(EntityManagerInterface $em, Request $request ): Response
+    public function createAction(EntityManagerInterface $em, Request $request): Response
     {
         $task = new Task();
         $form = $this->createForm(TaskType::class, $task);
@@ -33,21 +33,24 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user =  $this->getUser();
             $task->setCreatedAt(new \DateTimeImmutable)
-                ->setIsDone(false);
+                ->setIsDone(false)
+                ->setUser($user);
             $em->persist($task);
             $em->flush();
+            $this->addFlash('success', 'Votre nouvelle tache a bien été crée');
             return $this->redirectToRoute('app_home');
         }
         return $this->render('task/createtask.html.twig', [
             'form' => $form->createView()
-        ])
-        ;
+        ]);
     }
     #[Route('/tasks/{id}/edit', name: 'task_edit')]
-    public function editAction(Task $task, Request $request,EntityManagerInterface $em)
+    public function editAction(Task $task, Request $request, EntityManagerInterface $em)
     {
         $form = $this->createForm(TaskType::class, $task);
+
 
         $form->handleRequest($request);
 
@@ -67,7 +70,7 @@ class TaskController extends AbstractController
         ]);
     }
     #[Route('/tasks/{id}/toggle', name: 'task_toggle')]
-    public function toggleTaskAction(Task $task,EntityManagerInterface $em)
+    public function toggleTaskAction(Task $task, EntityManagerInterface $em)
     {
         $task->setIsDone(!$task->getIsDone());
         $em->flush();
@@ -78,9 +81,9 @@ class TaskController extends AbstractController
     }
 
     #[Route('/tasks/{id}/delete', name: 'task_delete')]
-    public function deleteTaskAction(Task $task,EntityManagerInterface $em)
+    public function deleteTaskAction(Task $task, EntityManagerInterface $em)
     {
-        
+
         $em->remove($task);
         $em->flush();
 
@@ -88,5 +91,14 @@ class TaskController extends AbstractController
 
         return $this->redirectToRoute('task_list');
     }
-}
+    #[Route('/tasklistdone', name: 'task_listdone')]
+    public function listTaskdone(TaskRepository $taskRepository): Response
+    {
 
+        $tasks = $taskRepository->findBy([], ['createdAt' => 'asc'],);
+        return $this->render('task/taskListdone.html.twig', [
+            'controller_name' => 'TaskController',
+            'tasks' => $tasks,
+        ]);
+    }
+}
