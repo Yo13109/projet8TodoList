@@ -24,6 +24,7 @@ class TaskController extends AbstractController
             'tasks' => $tasks,
         ]);
     }
+
     #[Route('/createtask', name: 'task_create')]
     public function createAction(EntityManagerInterface $em, Request $request): Response
     {
@@ -69,7 +70,7 @@ class TaskController extends AbstractController
             'task' => $task,
         ]);
     }
-    #[Route('/tasks/{id}/toggle', name: 'task_toggle')]
+    #[Route(path:'/tasks/{id}/toggle', name: 'task_toggle')]
     public function toggleTaskAction(Task $task, EntityManagerInterface $em)
     {
         $task->setIsDone(!$task->getIsDone());
@@ -91,6 +92,7 @@ class TaskController extends AbstractController
 
         return $this->redirectToRoute('task_list');
     }
+
     #[Route('/tasklistdone', name: 'task_listdone')]
     public function listTaskdone(TaskRepository $taskRepository): Response
     {

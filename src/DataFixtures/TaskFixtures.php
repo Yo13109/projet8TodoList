@@ -47,7 +47,7 @@ class TaskFixtures extends Fixture implements DependentFixtureInterface
                 'title' => 'Projet 6',
                 'content' => 'Développez de A à Z le site communautaire SnowTricks',
                 'isDone' => 1,
-                'user' => 3,
+                'user' => 2,
             ],
             7 => [
                 'title' => 'Projet 7',
@@ -71,9 +71,10 @@ class TaskFixtures extends Fixture implements DependentFixtureInterface
            
         ];
 
-        foreach ($datas as $key => $taskdatas) {
+        foreach ($datas as  $taskdatas) {
             $task = new Task();
-            $user = $this->getReference('user'. $taskdatas['user']);
+           
+            $user =  $taskdatas['user'] !== null ? $this->getReference('user'. $taskdatas['user']) : null;
             $task
                 ->setTitle($taskdatas['title'])
                 ->setCreatedAt(new \DateTimeImmutable)

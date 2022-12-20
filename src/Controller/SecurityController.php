@@ -42,7 +42,30 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
-    #[Route('/user/edit', name: 'user_edit')]
+    #[Route(path:'/user/admin/{id}', name: 'role_admin')]
+    public function AdminChange( User $user, EntityManagerInterface $em)
+    {
+        
+        $user ->setRoles(['ROLE_ADMIN']);
+        $em->flush();
+
+        $this->addFlash('success', sprintf('La role de  %s a bien été modifié', $user->getEmail()));
+
+        return $this->redirectToRoute('task_list');
+        }
+        #[Route(path:'/user/utilisateur/{id}', name: 'role_utilisateur')]
+        public function UtilisateurChange( User $user, EntityManagerInterface $em)
+        {
+            
+            $user ->setRoles(['ROLE_USER']);
+            $em->flush();
+    
+            $this->addFlash('success', sprintf('La role de  %s a bien été modifié', $user->getEmail()));
+    
+            return $this->redirectToRoute('task_list');
+            }
+    
+    #[Route(path:'/user/edit', name: 'user_edit')]
     public function editUser(UserRepository $userRepository, Request $request,EntityManagerInterface $em)
     {
         
