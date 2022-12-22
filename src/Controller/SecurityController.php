@@ -69,7 +69,7 @@ class SecurityController extends AbstractController
     public function editUser(UserRepository $userRepository, Request $request,EntityManagerInterface $em)
     {
         
-        $user = $userRepository->findBy([], ['createdAt' => 'asc'],);
+        $user = $userRepository->findBy([], ['id' => 'asc'],);
 
 
 
