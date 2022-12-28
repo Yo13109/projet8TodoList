@@ -2,16 +2,15 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\Task;
-use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Security;
+use App\Entity\User;
 
-class TasksVoter extends Voter
+class UserVoter extends Voter
 {
-    public const EDIT = 'POST_EDIT';
+    public const EDIT = 'USER_EDIT';
     public const VIEW = 'POST_VIEW';
 
     private $security;
@@ -21,51 +20,43 @@ class TasksVoter extends Voter
         $this->security = $security;
     }
 
-    protected function supports(string $attribute, $task): bool
+    protected function supports(string $attribute, $subject): bool
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::EDIT, self::VIEW])
-            && $task instanceof \App\Entity\Task;
+        return in_array($attribute, [self::EDIT, self::VIEW]);
+          
     }
 
-
-    protected function voteOnAttribute(string $attribute, $task, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         // if the user is anonymous, do not grant access
-        if (!$user instanceof UserInterface) {
+        if (!$user instanceof User) {
             return false;
         }
+
         //on vérifie si l'utilisateur est admin
 
-        if ($this->security->isGranted("ROLE_ADMIN")) return true; 
-        //on verifie si l'utilisateur est nulle.
-        if(null === $task->getUser()) return false;
+       // if ($this->security->isGranted("ROLE_ADMIN")) return true;
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case self::EDIT:
                 // logic to determine if the user can EDIT
                 // return true or false
-                return $this->canEdit($task,$user);
+                return $this->canEdit();
                 break;
             case self::VIEW:
                 // logic to determine if the user can VIEW
                 // return true or false
-                return $this->canView($task, $user);
                 break;
         }
 
         return false;
     }
-    private function canEdit(Task $task, User $user ){
-        return $user === $task->getUser();
-        
-    }
-    private function canView(Task $task, User $user){
-        return $user === $task->getUser();
-        
-        
+    private function canEdit(){
+    
+        return $this->security->isGranted("ROLE_ADMIN");
     }
 }

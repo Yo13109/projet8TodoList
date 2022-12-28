@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block header_img %}<img class="slide-image" src="{{ asset('img/todolist_content.jpg') }}" alt="todo list">{% endblock %}
+
 
 {% block body %}
     <div class="row">
@@ -9,7 +9,7 @@
             <div class="thumbnail">
                 <div class="caption">
                     <h4><a >{{ user.email }}</a></h4>
-                <p>roles</p>
+                
                 </div>
                 <div>
                     {% if user.roles == null %}
@@ -19,12 +19,12 @@
 			{% else %}
 
 				{% if user.roles == ['ROLE_USER'] %}
-					<a href="{{ path('role_admin',{'id': user.id}) }}"> Devenir ADMIN
-						</a>
+					<button class="btn btn-info btn-sm pull-right"><a href="{{ path('role_admin',{'id': user.id}) }}"> Devenir ADMIN
+						</a></button>
                         {% else %}
 
-                        <a href="{{ path('role_utilisateur',{'id': user.id}) }}"> Devenir Utilisateur
-						</a>
+                       <button class="btn btn-info btn-sm pull-right"> <a href="{{ path('role_utilisateur',{'id': user.id}) }}"> Devenir Utilisateur
+						</a></button>
 				{% endif %}
 				{% endif %}
                 </div>
