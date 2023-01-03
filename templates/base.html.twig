@@ -43,8 +43,12 @@
                 {% endif %}
 
                 {% if app.user %}
-                {% if is_granted("USER_EDIT")%}<a href="{{ path('user_edit') }}" class="btn btn-secondary">Gestion des utilisateurs</a>{% endif %}
                 <a href="{{ path('app_logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
+
+                {{app.user.email}}
+                
+                {% if is_granted("USER_EDIT")%}<a href="{{ path('user_edit') }}" class="pull-right btn btn-blue">Gestion des utilisateurs</a>{% endif %}
+               
                 {% endif %}
 
                 {% if not app.user and 'login' != app.request.attributes.get('_route') %}
@@ -71,7 +75,7 @@
                 </div>
             </div>
 
-            <br />
+            <br />-
 
             <div class="row">
                 <div class="col-md-12">
@@ -99,3 +103,4 @@
     </body>
 </html>
 
+*************************+*

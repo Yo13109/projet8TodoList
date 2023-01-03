@@ -7,9 +7,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\TaskType;
 use App\Entity\Task;
+use App\Entity\User;
 use App\Repository\TaskRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+
 
 class TaskController extends AbstractController
 {
@@ -17,11 +20,14 @@ class TaskController extends AbstractController
     #[Route('/tasklist', name: 'task_list')]
     public function listTask(TaskRepository $taskRepository): Response
     {
-
-        $tasks = $taskRepository->findBy([], ['createdAt' => 'asc'],);
+        
+        $task = $taskRepository->findBy(['User'=>$this->getUser()], ['createdAt' => 'asc'],);
+        
+        
+                                
         return $this->render('task/taskList.html.twig', [
             'controller_name' => 'TaskController',
-            'tasks' => $tasks,
+            'tasks' => $task,
         ]);
     }
 

@@ -21,16 +21,16 @@ class TasksVoter extends Voter
         $this->security = $security;
     }
 
-    protected function supports(string $attribute, $task): bool
+    protected function supports(string $attribute, $subject): bool
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
         return in_array($attribute, [self::EDIT, self::VIEW])
-            && $task instanceof \App\Entity\Task;
+            && $subject instanceof \App\Entity\Task;
     }
 
 
-    protected function voteOnAttribute(string $attribute, $task, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         // if the user is anonymous, do not grant access
@@ -39,32 +39,38 @@ class TasksVoter extends Voter
         }
         //on vérifie si l'utilisateur est admin
 
-        if ($this->security->isGranted("ROLE_ADMIN")) return true; 
+     //   if ($this->security->isGranted("ROLE_ADMIN")) return true; 
         //on verifie si l'utilisateur est nulle.
-        if(null === $task->getUser()) return false;
+        if(null === $subject->getUser()) return false;
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case self::EDIT:
                 // logic to determine if the user can EDIT
                 // return true or false
-                return $this->canEdit($task,$user);
+                return $this->canEdit($subject,$user);
                 break;
             case self::VIEW:
                 // logic to determine if the user can VIEW
                 // return true or false
-                return $this->canView($task, $user);
+                return $this->canView($subject, $user);
                 break;
         }
 
         return false;
     }
     private function canEdit(Task $task, User $user ){
-        return $user === $task->getUser();
-        
+
+        if ($user == null){
+            return  $this->security->isGranted("ROLE_ADMIN");
+        }
+        else {
+            return $user === $task->getUser();
+        }    
     }
     private function canView(Task $task, User $user){
         return $user === $task->getUser();
+        return $this->security->isGranted("ROLE_ADMIN");
         
         
     }
