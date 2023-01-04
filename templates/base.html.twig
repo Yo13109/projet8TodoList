@@ -43,13 +43,25 @@
                 {% endif %}
 
                 {% if app.user %}
-                <a href="{{ path('app_logout') }}" class="pull-right btn btn-danger">Se déconnecter</a>
-
-                {{app.user.email}}
-                
-                {% if is_granted("USER_EDIT")%}<a href="{{ path('user_edit') }}" class="pull-right btn btn-blue">Gestion des utilisateurs</a>{% endif %}
+                <ul class="nav justify-content-end">
+  <li class="nav-item">
+    <a class="nav-link pull-right btn btn-danger"  href="{{ path('app_logout') }}" class="">Se déconnecter</a>
+  </li>
+  <li class="nav-item ">
+    <a class="pull-right btn btn nav-link disabled ">{{app.user.email}}</a>
+  </li>
+  <li class="nav-item ">
+    {% if is_granted("USER_EDIT")%}<a class="nav-link pull-right btn btn-info" href="{{ path('user_edit') }}" class="pull-right btn btn-blue">Gestion des utilisateurs</a>{% endif %}
                
                 {% endif %}
+  </li>
+  
+</ul>
+               
+
+                
+                
+                
 
                 {% if not app.user and 'login' != app.request.attributes.get('_route') %}
                 <a href="{{ path('app_login') }}" class="btn btn-success">Se connecter</a>

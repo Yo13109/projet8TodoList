@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Security;
 class TasksVoter extends Voter
 {
     public const EDIT = 'POST_EDIT';
-    public const VIEW = 'POST_VIEW';
+    public const VIEW = 'TASK_VIEW';
 
     private $security;
 

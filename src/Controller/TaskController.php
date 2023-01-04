@@ -20,8 +20,11 @@ class TaskController extends AbstractController
     #[Route('/tasklist', name: 'task_list')]
     public function listTask(TaskRepository $taskRepository): Response
     {
-        
-        $task = $taskRepository->findBy(['User'=>$this->getUser()], ['createdAt' => 'asc'],);
+        if (! $this->isGranted("TASK_VIEW")) {
+            return $this->redirectToRoute("app_home");
+           }
+
+        $task = $taskRepository->findBy(['user'=>$this->getUser()], ['createdAt' => 'asc'],);
         
         
                                 
@@ -56,6 +59,11 @@ class TaskController extends AbstractController
     #[Route('/tasks/{id}/edit', name: 'task_edit')]
     public function editAction(Task $task, Request $request, EntityManagerInterface $em)
     {
+
+        if (! $this->isGranted("TASK_VIEW")) {
+            return $this->redirectToRoute("app_home");
+           }
+
         $form = $this->createForm(TaskType::class, $task);
 
 
@@ -79,6 +87,10 @@ class TaskController extends AbstractController
     #[Route(path:'/tasks/{id}/toggle', name: 'task_toggle')]
     public function toggleTaskAction(Task $task, EntityManagerInterface $em)
     {
+        if (! $this->isGranted("TASK_VIEW")) {
+            return $this->redirectToRoute("app_home");
+           }
+
         $task->setIsDone(!$task->getIsDone());
         $em->flush();
 
@@ -90,6 +102,9 @@ class TaskController extends AbstractController
     #[Route('/tasks/{id}/delete', name: 'task_delete')]
     public function deleteTaskAction(Task $task, EntityManagerInterface $em)
     {
+        if (! $this->isGranted("TASK_VIEW")) {
+            return $this->redirectToRoute("app_home");
+           }
 
         $em->remove($task);
         $em->flush();
