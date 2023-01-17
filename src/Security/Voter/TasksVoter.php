@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Security;
 
 class TasksVoter extends Voter
 {
-    public const EDIT = 'POST_EDIT';
+    public const EDIT = 'TASK_EDIT';
     public const VIEW = 'TASK_VIEW';
 
     private $security;
@@ -70,7 +70,7 @@ class TasksVoter extends Voter
     }
     private function canView(Task $task, User $user){
         return $user === $task->getUser();
-        return $this->security->isGranted("ROLE_ADMIN");
+    
         
         
     }

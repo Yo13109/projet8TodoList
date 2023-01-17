@@ -11,6 +11,7 @@ use App\Entity\User;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 
 
@@ -20,11 +21,12 @@ class TaskController extends AbstractController
     #[Route('/tasklist', name: 'task_list')]
     public function listTask(TaskRepository $taskRepository): Response
     {
-        if (! $this->isGranted("TASK_VIEW")) {
-            return $this->redirectToRoute("app_home");
-           }
-
+       if (!$this->isGranted('ROLE_ADMIN')) {
         $task = $taskRepository->findBy(['user'=>$this->getUser()], ['createdAt' => 'asc'],);
+       }
+        else {
+            $task=$taskRepository->TaskUserAnonyme($this->getUser());
+        }
         
         
                                 
@@ -120,6 +122,17 @@ class TaskController extends AbstractController
 
         $tasks = $taskRepository->findBy([], ['createdAt' => 'asc'],);
         return $this->render('task/taskListdone.html.twig', [
+            'controller_name' => 'TaskController',
+            'tasks' => $tasks,
+        ]);
+    }
+    #[Route('/taskuseranonyme', name: 'task_user_anonyme')]
+    public function listTaskUserAnonyme(TaskRepository $taskRepository,$anonyme): Response
+    {
+        $tasks = $taskRepository->TaskUserAnonyme($anonyme);
+
+        return $this->render('task/taskuseranonyme.html.twig',
+        [
             'controller_name' => 'TaskController',
             'tasks' => $tasks,
         ]);
