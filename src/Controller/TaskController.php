@@ -126,15 +126,5 @@ class TaskController extends AbstractController
             'tasks' => $tasks,
         ]);
     }
-    #[Route('/taskuseranonyme', name: 'task_user_anonyme')]
-    public function listTaskUserAnonyme(TaskRepository $taskRepository,$anonyme): Response
-    {
-        $tasks = $taskRepository->TaskUserAnonyme($anonyme);
-
-        return $this->render('task/taskuseranonyme.html.twig',
-        [
-            'controller_name' => 'TaskController',
-            'tasks' => $tasks,
-        ]);
-    }
+    
 }
