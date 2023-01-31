@@ -7,9 +7,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\TaskType;
 use App\Entity\Task;
+use App\Entity\User;
 use App\Repository\TaskRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
+
 
 class TaskController extends AbstractController
 {
@@ -17,13 +21,21 @@ class TaskController extends AbstractController
     #[Route('/tasklist', name: 'task_list')]
     public function listTask(TaskRepository $taskRepository): Response
     {
-
-        $tasks = $taskRepository->findBy([], ['createdAt' => 'asc'],);
+       if (!$this->isGranted('ROLE_ADMIN')) {
+        $task = $taskRepository->findBy(['user'=>$this->getUser()], ['createdAt' => 'asc'],);
+       }
+        else {
+            $task=$taskRepository->TaskUserAnonyme($this->getUser());
+        }
+        
+        
+                                
         return $this->render('task/taskList.html.twig', [
             'controller_name' => 'TaskController',
-            'tasks' => $tasks,
+            'tasks' => $task,
         ]);
     }
+
     #[Route('/createtask', name: 'task_create')]
     public function createAction(EntityManagerInterface $em, Request $request): Response
     {
@@ -49,6 +61,11 @@ class TaskController extends AbstractController
     #[Route('/tasks/{id}/edit', name: 'task_edit')]
     public function editAction(Task $task, Request $request, EntityManagerInterface $em)
     {
+
+        if (! $this->isGranted("TASK_VIEW")) {
+            return $this->redirectToRoute("app_home");
+           }
+
         $form = $this->createForm(TaskType::class, $task);
 
 
@@ -69,9 +86,13 @@ class TaskController extends AbstractController
             'task' => $task,
         ]);
     }
-    #[Route('/tasks/{id}/toggle', name: 'task_toggle')]
+    #[Route(path:'/tasks/{id}/toggle', name: 'task_toggle')]
     public function toggleTaskAction(Task $task, EntityManagerInterface $em)
     {
+        if (! $this->isGranted("TASK_VIEW")) {
+            return $this->redirectToRoute("app_home");
+           }
+
         $task->setIsDone(!$task->getIsDone());
         $em->flush();
 
@@ -83,6 +104,9 @@ class TaskController extends AbstractController
     #[Route('/tasks/{id}/delete', name: 'task_delete')]
     public function deleteTaskAction(Task $task, EntityManagerInterface $em)
     {
+        if (! $this->isGranted("TASK_VIEW")) {
+            return $this->redirectToRoute("app_home");
+           }
 
         $em->remove($task);
         $em->flush();
@@ -91,6 +115,7 @@ class TaskController extends AbstractController
 
         return $this->redirectToRoute('task_list');
     }
+
     #[Route('/tasklistdone', name: 'task_listdone')]
     public function listTaskdone(TaskRepository $taskRepository): Response
     {
@@ -101,4 +126,5 @@ class TaskController extends AbstractController
             'tasks' => $tasks,
         ]);
     }
+    
 }

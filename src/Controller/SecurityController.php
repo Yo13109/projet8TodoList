@@ -42,29 +42,49 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
-    #[Route('/user/edit', name: 'user_edit')]
-    public function editUser(User $user, Request $request,EntityManagerInterface $em)
+    #[Route(path:'/user/admin/{id}', name: 'role_admin')]
+    public function AdminChange( User $user, EntityManagerInterface $em)
     {
-        $form = $this->createForm(UserType::class, $user);
+        
+        $user ->setRoles(['ROLE_ADMIN']);
+        $em->flush();
 
+        $this->addFlash('success', sprintf('La role de  %s a bien été modifié', $user->getEmail()));
 
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            
-            $em->persist($user);
-            $em->flush();
-
-            $this->addFlash('success', 'La tâche a bien été modifiée.');
-
-            return $this->redirectToRoute('task_list');
+        return $this->redirectToRoute('task_list');
         }
+        #[Route(path:'/user/utilisateur/{id}', name: 'role_utilisateur')]
+        public function UtilisateurChange( User $user, EntityManagerInterface $em)
+        {
+            
+            $user ->setRoles(['ROLE_USER']);
+            $em->flush();
+    
+            $this->addFlash('success', sprintf('La role de  %s a bien été modifié', $user->getEmail()));
+    
+            return $this->redirectToRoute('task_list');
+            }
+    
+    #[Route(path:'/user/edit', name: 'user_edit')]
+    public function editUser(UserRepository $userRepository, Request $request,EntityManagerInterface $em)
+    {
+        
+       if (! $this->isGranted("USER_EDIT")) {
+        return $this->redirectToRoute("app_home");
+       }
+        $user = $userRepository->findBy([], ['id' => 'asc'],);
+
+
+
+            
 
         return $this->render('security/edituser.html.twig', [
-            'form' => $form->createView(),
+            'controller_name' => 'SecurityController',
             'user' => $user,
         ]);
-    }
+        }
+
+    
     #[Route(path: '/inscription', name: 'app_registration')]
     public function registration(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher)
     {
