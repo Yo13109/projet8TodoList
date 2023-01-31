@@ -109,9 +109,6 @@ class SecurityController extends AbstractController
              ;
              
 
-
-
-
         $em->persist($user);
         $em->flush();
         $this->addFlash('success', 'Votre inscription a bien été prise en compte');

@@ -4,9 +4,9 @@ namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class TestHomeControllerTest extends WebTestCase
+class TaskControllerTest extends WebTestCase
 {
-    public function testHomePage(): void
+    public function testSomething(): void
     {
         $client = static::createClient();
         $crawler = $client->request('GET', '/');
