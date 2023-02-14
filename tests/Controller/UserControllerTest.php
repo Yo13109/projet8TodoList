@@ -25,20 +25,7 @@ class UserControllerTest extends WebTestCase
         $client->request('GET', '/logout');
         $client->followRedirect();
         $this->assertSelectorTextContains('h2', "Se connecter");
-       // $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
-        /*$userRepository = $client->getContainer()->get(UserRepository::class);
-        $user = $userRepository->findBy([]);
-
-        $client ->loginUser($user);
-        $client->request('GET','/logout');
-        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
-        $client->followRedirect();
-
-        $this->assertRouteSame('/');
-        $this->assertResponseIsSuccessful();
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);*/
-
-        $this->assertEquals(2,2);
+       
        
        
         
@@ -75,6 +62,18 @@ class UserControllerTest extends WebTestCase
         ]);
         $this->assertResponseRedirects('');
             
+    }
+
+    public function testCreateUser(): void
+    {
+        $client = static::createClient();
+        $client->request('POST','/inscription',[
+            'email'=>'yoann.corsi@gmail.com',
+            'password' => 'Yoann13109',
+            'role'=> 'ROLE_ADMIN'],);
+
+            $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+    
     }
 
 }
