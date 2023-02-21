@@ -52,15 +52,9 @@
   </li>
   <li class="nav-item">
     <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle pull-right"  role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            {{app.user.email}}</a>
-            <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Creer une tache</a></li>
-            <li><a class="dropdown-item" href="#">Mes Tasks</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-  </li>
+         <h6> <a id="useremail" class="nav-link dropdown-toggle pull-right"  role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{app.user.email}}</a></h6>
+           
   <li class="nav-item ">
     {% if is_granted("USER_EDIT")%}<a class="nav-link pull-right btn btn-success" href="{{ path('user_edit') }}" class="pull-right btn btn-blue">Gestion des utilisateurs</a>{% endif %}
            </li>

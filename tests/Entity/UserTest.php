@@ -14,12 +14,13 @@ class UserTest extends KernelTestCase
 
         $container = static::getContainer();
         $user = new User;
-        
+        $task = new Task;
 
 
         $user->setEmail('yoann.corsi@sfr.fr')
             ->setPassword('Yoann13109')
             ->setRoles(['ROLE_ADMIN'])
+            ->addTask($task)
             ;
         $error = $container->get('validator')->validate($user);
         $this->assertCount(0,$error);
