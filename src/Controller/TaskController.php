@@ -62,9 +62,9 @@ class TaskController extends AbstractController
     public function editAction(Task $task, Request $request, EntityManagerInterface $em)
     {
 
-        if (! $this->isGranted("TASK_VIEW")) {
-            return $this->redirectToRoute("app_home");
-           }
+        //if (! $this->isGranted("TASK_EDIT")) {
+          //  return $this->redirectToRoute("app_home");
+           //}
 
         $form = $this->createForm(TaskType::class, $task);
 

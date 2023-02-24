@@ -2,8 +2,10 @@
 
 namespace App\Tests\Controller;
 
+use App\Repository\TaskRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 Use Symfony\component\HttpFoundation\Response;
+use App\Repository\UserRepository;
 
 class TaskControllerTest extends WebTestCase
 {
@@ -25,12 +27,44 @@ class TaskControllerTest extends WebTestCase
             $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     
     }
-   // public function testDeleteTask(): void
-    //{
-      //  $client = static::createClient();
-      // $client->request('Get','/tasks/135/delete',);
+    public function testDeleteTask(): void
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $testUser = $userRepository->findOneByEmail('yoann.corsi@gmail.com');
+        $client->loginUser($testUser);
+      $taskRepository = static::getContainer()->get(TaskRepository::class);
+        $testTask = $taskRepository->findOneByTitle('Projet 4');
+
+      
+       $client->request('GET','/tasks/104/delete',);
             
-        //    $this->assertResponseIsSuccessful();
+       $client->followRedirect();
+       $this->assertSelectorTextContains('h6', "yoann.corsi@gmail.com");
     
-   //}
+   }
+   public function testEditTask(): void
+   {
+       $client = static::createClient();
+       $userRepository = static::getContainer()->get(UserRepository::class);
+       $testUser = $userRepository->findOneByEmail('yoann.corsi@gmail.com');
+       $client->loginUser($testUser);
+     $taskRepository = static::getContainer()->get(TaskRepository::class);
+       $testTask = $taskRepository->findOneByTitle('Projet 8');
+
+     
+       $crawler = $client->request('GET', '/tasks/108/edit');
+       $buttonCrawlerNode = $crawler->selectButton('Modifier');
+       $form = $buttonCrawlerNode->form();
+       $client->submit($form, [
+           'task[title]'    => 'projet 8',
+           'task[content]' => 'Finir Les Tests!',
+
+       ]);
+           
+      $client->followRedirect();
+      $this->assertSelectorTextContains('h6', "yoann.corsi@gmail.com");
+
+   
+  }
 }
