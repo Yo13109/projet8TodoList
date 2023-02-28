@@ -89,9 +89,9 @@ class TaskController extends AbstractController
     #[Route(path:'/tasks/{id}/toggle', name: 'task_toggle')]
     public function toggleTaskAction(Task $task, EntityManagerInterface $em)
     {
-        if (! $this->isGranted("TASK_VIEW")) {
-            return $this->redirectToRoute("app_home");
-           }
+        //if (! $this->isGranted("TASK_VIEW")) {
+          //  return $this->redirectToRoute("app_home");
+           //}
 
         $task->setIsDone(!$task->getIsDone());
         $em->flush();
@@ -104,9 +104,9 @@ class TaskController extends AbstractController
     #[Route('/tasks/{id}/delete', name: 'task_delete')]
     public function deleteTaskAction(Task $task, EntityManagerInterface $em)
     {
-        if (! $this->isGranted("TASK_VIEW")) {
-            return $this->redirectToRoute("app_home");
-           }
+        //if (! $this->isGranted("TASK_VIEW")) {
+          //  return $this->redirectToRoute("app_home");
+           //}
 
         $em->remove($task);
         $em->flush();
