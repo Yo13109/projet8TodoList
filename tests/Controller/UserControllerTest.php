@@ -26,8 +26,8 @@ class UserControllerTest extends WebTestCase
         $client->followRedirect();
         $this->assertSelectorTextContains('h2', "Se connecter");
     }
-      public function testLoginfauxidentifiants()
-     {
+    public function testLoginfauxidentifiants()
+    {
         $client = static::createClient();
         $crawler = $client->request('GET', '/login');
         $buttonCrawlerNode = $crawler->selectButton('Se Connecter');
@@ -36,10 +36,8 @@ class UserControllerTest extends WebTestCase
             'email'    => 'yoann.corsi@gmail.com',
             'password' => 'Yoann131',
         ]);
-     $client->followRedirect();
-     $this->assertSelectorTextContains('h2', "Se connecter");
-
-
+        $client->followRedirect();
+        $this->assertSelectorTextContains('h2', "Se connecter");
     }
     public function testLoginVraiIdentifiants()
     {
@@ -88,5 +86,59 @@ class UserControllerTest extends WebTestCase
 
         $client->followRedirect();
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+    }
+    public function testGestionUtilisateur(): void
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $testUser = $userRepository->findOneByEmail('yoann.corsi@gmail.com');
+        $client->loginUser($testUser);
+
+
+        $crawler = $client->request('GET', '/user/edit');
+
+
+
+
+
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+    }
+    public function testAdminChange(): void
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $testUser = $userRepository->findOneByEmail('yoann.corsi@gmail.com');
+        $client->loginUser($testUser);
+
+
+        $crawler = $client->request('GET', '/user/admin/70');
+
+
+
+
+
+
+        $client->followRedirect();
+        $this->assertSelectorTextContains('h6', "yoann.corsi@gmail.com");
+    }
+    
+    public function testUtilisateurChange(): void
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $testUser = $userRepository->findOneByEmail('yoann.corsi@gmail.com');
+        $client->loginUser($testUser);
+
+
+        $crawler = $client->request('GET', '/user/utilisateur/69');
+
+
+
+
+
+
+        $client->followRedirect();
+        $this->assertSelectorTextContains('h6', "yoann.corsi@gmail.com");
     }
 }
