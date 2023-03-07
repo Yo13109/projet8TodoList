@@ -111,8 +111,11 @@ class UserControllerTest extends WebTestCase
         $testUser = $userRepository->findOneByEmail('yoann.corsi@gmail.com');
         $client->loginUser($testUser);
 
+        $testUser2 = $userRepository->findOneByEmail('elodie.corsi@gmail.com');
+        $id = $testUser2->getid();
 
-        $crawler = $client->request('GET', '/user/admin/70');
+
+        $client->request('GET', "/user/admin/{$id}");
 
 
 
@@ -122,7 +125,7 @@ class UserControllerTest extends WebTestCase
         $client->followRedirect();
         $this->assertSelectorTextContains('h6', "yoann.corsi@gmail.com");
     }
-    
+
     public function testUtilisateurChange(): void
     {
         $client = static::createClient();
@@ -130,8 +133,11 @@ class UserControllerTest extends WebTestCase
         $testUser = $userRepository->findOneByEmail('yoann.corsi@gmail.com');
         $client->loginUser($testUser);
 
+        $testUser2 = $userRepository->findOneByEmail('laura.corsi@gmail.com');
+        $id = $testUser2->getid();
 
-        $crawler = $client->request('GET', '/user/utilisateur/69');
+
+        $client->request('GET', "/user/utilisateur/{$id}");
 
 
 
