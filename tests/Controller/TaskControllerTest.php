@@ -92,14 +92,14 @@ class TaskControllerTest extends WebTestCase
         $client->followRedirect();
         $this->assertSelectorTextContains('h6', "yoann.corsi@gmail.com");
     }
-   /* public function testEditTaskFalse(): void
+    public function testEditTaskFalse(): void
     {
         $client = static::createClient();
         $userRepository = static::getContainer()->get(UserRepository::class);
         $testUser = $userRepository->findOneByEmail('yoann.corsi@gmail.com');
         $client->loginUser($testUser);
         $taskRepository = static::getContainer()->get(TaskRepository::class);
-        $testTask = $taskRepository->findOneByTitle('Projet 3');
+        $testTask = $taskRepository->findOneByTitle('Projet 9');
         $id =$testTask->getId();
 
 
@@ -114,7 +114,7 @@ class TaskControllerTest extends WebTestCase
 
         $client->followRedirect();
         $this->assertSelectorTextContains('h6', "yoann.corsi@gmail.com");
-    }*/
+    }
     public function testDeleteTaskAnonyme(): void
     {
        $client = static::createClient();

@@ -104,7 +104,7 @@ class TaskController extends AbstractController
     #[Route('/tasks/{id}/delete', name: 'task_delete')]
     public function deleteTaskAction(Task $task, EntityManagerInterface $em)
     {
-        if (! $this->isGranted("TASK_EDIT",$task)) {
+        if (! $this->isGranted("TASK_VIEW",$task)) {
             return $this->redirectToRoute("app_home");
            }
 

@@ -147,4 +147,24 @@ class UserControllerTest extends WebTestCase
         $client->followRedirect();
         $this->assertSelectorTextContains('h6', "yoann.corsi@gmail.com");
     }
+    public function testAccesLoginUtilisateurConnecté(): void
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $testUser = $userRepository->findOneByEmail('yoann.corsi@gmail.com');
+        $client->loginUser($testUser);
+        $client->request('GET', '/login');
+        $client->followRedirect();
+        $this->assertSelectorTextContains('h6', "yoann.corsi@gmail.com");
+    }
+    public function testAccesRegistrationUtilisateurConnecté(): void
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $testUser = $userRepository->findOneByEmail('yoann.corsi@gmail.com');
+        $client->loginUser($testUser);
+        $client->request('GET', '/inscription');
+        $client->followRedirect();
+        $this->assertSelectorTextContains('h6', "yoann.corsi@gmail.com");
+    }
 }
