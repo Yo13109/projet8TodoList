@@ -42,7 +42,7 @@ class TaskControllerTest extends WebTestCase
         $taskRepository = static::getContainer()->get(TaskRepository::class);
         $testTask = $taskRepository->findOneByTitle('Projet 4');
         $id = $testTask->getId();
-        dump($id);
+        
         
 
         $client->request('GET', "/tasks/{$id}/delete",);
@@ -50,7 +50,6 @@ class TaskControllerTest extends WebTestCase
         $client->followRedirect();
         $this->assertSelectorTextContains('h6', "yoann.corsi@gmail.com");
         $testTask = $taskRepository->findOneByTitle('Projet 4');
-        dump($testTask);
     }
    public function testEditTask(): void
     {
@@ -92,6 +91,23 @@ class TaskControllerTest extends WebTestCase
         $client->followRedirect();
         $this->assertSelectorTextContains('h6', "yoann.corsi@gmail.com");
     }
+    public function testToggleTaskFalse(): void
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+        $testUser = $userRepository->findOneByEmail('yoann.corsi@gmail.com');
+        $client->loginUser($testUser);
+        $taskRepository = static::getContainer()->get(TaskRepository::class);
+        $testTask = $taskRepository->findOneByTitle('Projet 5');
+        $id = $testTask->getId();
+
+        $client->request('GET', "/tasks/{$id}/toggle");
+
+
+
+        $client->followRedirect();
+        $this->assertSelectorTextContains('h6', "yoann.corsi@gmail.com");
+    }
     public function testEditTaskFalse(): void
     {
         $client = static::createClient();
@@ -99,18 +115,11 @@ class TaskControllerTest extends WebTestCase
         $testUser = $userRepository->findOneByEmail('yoann.corsi@gmail.com');
         $client->loginUser($testUser);
         $taskRepository = static::getContainer()->get(TaskRepository::class);
-        $testTask = $taskRepository->findOneByTitle('Projet 9');
+        $testTask = $taskRepository->findOneByTitle('Projet 7');
         $id =$testTask->getId();
 
 
         $crawler = $client->request('GET', "/tasks/{$id}/edit");
-        $buttonCrawlerNode = $crawler->selectButton('Modifier');
-        $form = $buttonCrawlerNode->form();
-        $client->submit($form, [
-            'task[title]'    => 'projet 3',
-            'task[content]' => 'Finir LE CHAMPIONNAT',
-
-        ]);
 
         $client->followRedirect();
         $this->assertSelectorTextContains('h6', "yoann.corsi@gmail.com");
