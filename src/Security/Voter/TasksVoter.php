@@ -25,8 +25,10 @@ class TasksVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
+       
         return in_array($attribute, [self::EDIT, self::VIEW])
             && $subject instanceof \App\Entity\Task;
+
     }
 
 
@@ -39,7 +41,7 @@ class TasksVoter extends Voter
         }
         //on vérifie si l'utilisateur est admin
 
-     //   if ($this->security->isGranted("ROLE_ADMIN")) return true; 
+       // if ($this->security->isGranted("ROLE_ADMIN")) return true; 
         //on verifie si l'utilisateur est nulle.
         if(null === $subject->getUser()) return false;
 

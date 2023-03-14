@@ -69,10 +69,11 @@ class SecurityController extends AbstractController
     public function editUser(UserRepository $userRepository, Request $request,EntityManagerInterface $em)
     {
         
-       if (! $this->isGranted("USER_EDIT")) {
-        return $this->redirectToRoute("app_home");
-       }
+       
         $user = $userRepository->findBy([], ['id' => 'asc'],);
+        if (! $this->isGranted("USER_EDIT",$user)) {
+            return $this->redirectToRoute("app_home");
+           }
 
 
 

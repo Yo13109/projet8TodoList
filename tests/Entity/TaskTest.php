@@ -20,6 +20,7 @@ class TaskTest extends KernelTestCase
             ->setIsDone(true)
             ->setCreatedAt(new \DateTimeImmutable)
             ->setUser($user);
+            
 
         $error = $container->get('validator')->validate($task);
         $this->assertCount(0,$error);
