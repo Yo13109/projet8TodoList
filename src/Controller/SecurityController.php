@@ -38,10 +38,13 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
+    
+   
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+    
     #[Route(path:'/user/admin/{id}', name: 'role_admin')]
     public function AdminChange( User $user, EntityManagerInterface $em)
     {

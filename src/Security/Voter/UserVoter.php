@@ -11,7 +11,7 @@ use App\Entity\User;
 class UserVoter extends Voter
 {
     public const EDIT = 'USER_EDIT';
-    public const VIEW = 'POST_VIEW';
+
 
     private $security;
 
@@ -24,8 +24,7 @@ class UserVoter extends Voter
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::EDIT, self::VIEW]);
-          
+        return in_array($attribute, [self::EDIT]);
     }
 
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
@@ -38,7 +37,7 @@ class UserVoter extends Voter
 
         //on vérifie si l'utilisateur est admin
 
-       // if ($this->security->isGranted("ROLE_ADMIN")) return true;
+        // if ($this->security->isGranted("ROLE_ADMIN")) return true;
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
@@ -47,16 +46,13 @@ class UserVoter extends Voter
                 // return true or false
                 return $this->canEdit();
                 break;
-            case self::VIEW:
-                // logic to determine if the user can VIEW
-                // return true or false
-                break;
         }
 
         return false;
     }
-    private function canEdit(){
-    
+    private function canEdit()
+    {
+
         return $this->security->isGranted("ROLE_ADMIN");
     }
 }
