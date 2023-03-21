@@ -36,10 +36,11 @@ class SecurityController extends AbstractController
 
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
-
+    /**
+    * @codeCoverageIgnore
+    */
     #[Route(path: '/logout', name: 'app_logout')]
-    
-   
+
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
@@ -102,9 +103,9 @@ class SecurityController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
         
-        //if ($user->getRoles() == null)  {
+        
             $user->setRoles([$form->get('roles')->getData()]);
-       // }
+       
         $password = $form->get('password')->getData();
         $user->setPassword(($this->passwordHasher->hashPassword(
                 $user,

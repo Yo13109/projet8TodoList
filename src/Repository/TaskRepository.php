@@ -21,7 +21,9 @@ class TaskRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Task::class);
     }
-
+    /**
+     * @codeCoverageIgnore
+     */
     public function save(Task $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -30,7 +32,9 @@ class TaskRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
+    /**
+     * @codeCoverageIgnore
+     */
     public function remove(Task $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);

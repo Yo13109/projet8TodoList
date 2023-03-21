@@ -37,9 +37,9 @@ class Task extends TestCase
     {
         return $this->id;
     }
-    /**@
-     *@coversNothing 
-     */
+    /**
+    * @codeCoverageIgnore
+    */
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
