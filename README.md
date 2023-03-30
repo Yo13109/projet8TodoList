@@ -14,3 +14,13 @@
  # 7. Migrate the table to the database -> symfony console doctrine:migration:migrate
  # 8. You can load the datas into the database -> symfony console doctrine:fixtures:load
  # 9. launch the application
+
+ # Command of Contribution
+
+ 
+# php bin/console --env=test doctrine:database:create
+
+
+# php bin/console --env=test doctrine:schema:create
+# composer require --dev doctrine/doctrine-fixtures-bundle
+# php bin/console --env=test doctrine:fixtures:load
