@@ -5,24 +5,33 @@ This document outlines the process for making modifications to the project and t
 # Process for making modifications
 1. Create a fork of the project: Developers should create a fork of the project on their own GitHub account before making any modifications. This allows them to work on their changes independently without affecting the main project.
 
-2. Make the changes: Developers should make the changes they want to contribute to the project in their forked repository.
+2. Go to the readme file and see how the application installs
 
-3. Create a pull request: Once the changes have been made, developers should create a pull request (PR) to merge their changes into the main project. The PR should include a detailed description of the changes made and the reason for the changes.
+3. Make the changes: Developers should make the changes they want to contribute to the project in their forked repository.
 
-4. Code review: The code changes in the PR will be reviewed by other members of the development team. They will provide feedback and suggest any necessary changes.
+4. Create a pull request: Once the changes have been made, developers should create a pull request (PR) to merge their changes into the main project. The PR should include a detailed description of the changes made and the reason for the changes.
 
-5. Merge changes: Once the code changes have been reviewed and approved, the changes will be merged into the main project.
+5. Code review: The code changes in the PR will be reviewed by other members of the development team. They will provide feedback and suggest any necessary changes.
+
+6. Merge changes: Once the code changes have been reviewed and approved, the changes will be merged into the main project.
 
 # Quality assurance procedures
 1. To ensure the quality of the project, developers must follow the following procedures when making contributions:
+ php bin/console --env=test doctrine:database:create
+ php bin/console --env=test doctrine:schema:create
+ composer require --dev doctrine/doctrine-fixtures-bundle
+ php bin/console --env=test doctrine:fixtures:load
 
 2. Write unit tests: All code changes must be accompanied by unit tests to ensure that the code works as expected and does not introduce any new bugs.
+ php bin/phpunit --coverage-html web/test-coverage
 
 3. Follow coding standards: Developers must adhere to the coding standards set by the project. This includes formatting, naming conventions, and code structure.
 
 4. Test changes: Developers should test their changes thoroughly before submitting a pull request. This includes testing on different environments and with different data sets.
 
 5. Documentation: Any changes made to the project must be documented clearly and thoroughly. This includes updating the project's README file and any relevant documentation.
+
+
 
 # Rules for making contributions
 1. Developers must adhere to the following rules when making contributions to the project:
