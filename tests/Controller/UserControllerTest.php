@@ -24,7 +24,7 @@ class UserControllerTest extends WebTestCase
         $client->loginUser($testUser);
         $client->request('GET', '/logout');
         $client->followRedirect();
-        $this->assertSelectorTextContains('h2', "Se connecter");
+        $this->assertSelectorTextContains('h5', "Se connecter");
     }
     public function testLoginfauxidentifiants()
     {
@@ -37,7 +37,7 @@ class UserControllerTest extends WebTestCase
             'password' => 'Yoann131',
         ]);
         $client->followRedirect();
-        $this->assertSelectorTextContains('h2', "Se connecter");
+        $this->assertSelectorTextContains('h5', "Se connecter");
     }
     public function testLoginVraiIdentifiants()
     {

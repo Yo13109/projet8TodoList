@@ -104,9 +104,7 @@ class TaskController extends AbstractController
     #[Route('/tasks/{id}/delete', name: 'task_delete')]
     public function deleteTaskAction(Task $task, EntityManagerInterface $em)
     {
-        if (! $this->isGranted("TASK_VIEW",$task)) {
-            return $this->redirectToRoute("app_home");
-           }
+        
 
         $em->remove($task);
         $em->flush();
@@ -119,8 +117,14 @@ class TaskController extends AbstractController
     #[Route('/tasklistdone', name: 'task_listdone')]
     public function listTaskdone(TaskRepository $taskRepository): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $tasks = $taskRepository->findBy(['user'=>$this->getUser()],);
+           }
+            else {
+                $tasks=$taskRepository->TaskUserAnonyme($this->getUser());
+            }
 
-        $tasks = $taskRepository->findBy([], ['createdAt' => 'asc'],);
+       
         return $this->render('task/taskListdone.html.twig', [
             'controller_name' => 'TaskController',
             'tasks' => $tasks,
